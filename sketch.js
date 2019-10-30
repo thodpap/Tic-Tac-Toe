@@ -17,12 +17,14 @@ function setup() {
 }
 
 function draw() {
-	background(0); 
-
-	fill(255);
+	background(0);  
+	fill('white');
 	rect(width/3,0,5,height);
+	fill('white');
 	rect(2*width/3,0,5,height);
+	fill('white');
 	rect(0,height/3,width,5);
+	fill('white');
 	rect(0,2*height/3,width,5);
 
 	for(let i = 0; i < bubbles_red.length; i++){
@@ -33,71 +35,25 @@ function draw() {
 	}
 } 
 function mouseClicked(){ 
-	let pos; 
+	let pos = new Block(0,0); 
 	let valid = false;
 	if(0 <= mouseX && mouseX < width/3){
-		if(0 <= mouseY && mouseY < height/3){
-			if(!arr[0][0]){
-				valid = true;
-				arr[0][0] = true;
-				pos = new Block(0,0);
-			}
-		}else if(height/3 <= mouseY && mouseY < 2 * height / 3){
-			if(!arr[0][1]) {
-				valid = true;
-				arr[0][1] = true;
-				pos = new Block(0,1);
-			}
-		}else{
-			if(!arr[0][2]) {
-				valid = true;
-				arr[0][2] = true;
-				pos = new Block(0,2);
-			}
-		}
-	}else if(width / 3 <= mouseX && mouseX < 2 * width / 3){
-		if(0 <= mouseY && mouseY < height/3){
-			if(!arr[1][0]){
-				valid = true;
-				arr[1][0] = true;
-				pos = new Block(1,0);
-			}
-		}else if(height/3 <= mouseY && mouseY < 2 * height / 3){
-			if(!arr[1][1]){
-				valid = true;
-				arr[1][1] = true;
-				pos = new Block(1,1);
-			}
-		}else{
-			if(!arr[1][2]){
-				valid = true;
-				arr[1][2] = true;
-				pos = new Block(1,2);
-			}
-		}
+		pos.x = 0;
+	} else if(width / 3 <= mouseX && mouseX < 2 * width / 3){
+		pos.x = 1;
 	}else{
-		if(0 <= mouseY && mouseY < height/3){
-			if(!arr[2][0]){
-				valid = true;
-				arr[2][0] = true;
-				pos = new Block(2,0);
-			}
-		}else if(height/3 <= mouseY && mouseY < 2 * height / 3){
-			if(!arr[2][1]){
-				valid = true;
-				arr[2][1] = true;
-				pos = new Block(2,1);
-			}
-		}else{
-			if(!arr[2][2]){
-				valid = true;
-				arr[2][2] = true;
-				pos = new Block(2,2);
-			}
-		}
-	} 
-	
-	if(valid){
+		pos.x = 2;
+	}
+	if(0 <= mouseY && mouseY < height/3){
+		pos.y = 0;
+	} else if(height / 3 <= mouseY && mouseY < 2 * height / 3){
+		pos.y = 1;
+	}else{
+		pos.y = 2;
+	}
+	// console.log(pos);
+	if(!arr[pos.x][pos.y]){
+		arr[pos.x][pos.y] = true;
 		if(!player){
 			let b = new Bubble(pos,radius);
 			bubbles_red.push(b);
@@ -106,7 +62,7 @@ function mouseClicked(){
 			cross_blue.push(c);
 		}
 		player = !player;
-	}
+	} 
 }  
 class Bubble{
 	constructor(pos,r){
@@ -166,5 +122,5 @@ function Create2DArray(rows) {
 }
 
 function checkTicTak(){
-	
+
 }
