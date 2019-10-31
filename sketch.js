@@ -6,12 +6,12 @@ let cross_blue = [];
 let player = true;   
 let arr = Create2DArray(3);
 let dif = 30;
-
+let game = true;
 function setup() { 
 	createCanvas(width, height);
 	for(let i = 0; i < 3; i++){
 		for(let j = 0; j < 3; j++){
-			arr[i][j] = false;
+			arr[i][j] = 0;
 		}
 	}  
 }
@@ -33,6 +33,9 @@ function draw() {
 	for(let i = 0; i < cross_blue.length; i++){ 
 		cross_blue[i].show();
 	}
+	if(game){
+        checkTicTak(arr);
+    }
 } 
 function mouseClicked(){ 
 	let pos = new Block(0,0); 
@@ -52,16 +55,21 @@ function mouseClicked(){
 		pos.y = 2;
 	}
 	// console.log(pos);
-	if(!arr[pos.x][pos.y]){
-		arr[pos.x][pos.y] = true;
-		if(!player){
+	if(!arr[pos.x][pos.y] && game){ 
+        if(player){
+            arr[pos.x][pos.y] = 1;
+        }else{
+            arr[pos.x][pos.y] = -1;
+        }
+		if(!player){ 
 			let b = new Bubble(pos,radius);
 			bubbles_red.push(b);
-		}else{
+		}else{ 
 			let c = new Cross(pos);
 			cross_blue.push(c);
 		}
 		player = !player;
+        console.log(arr[pos.x][pos.y]);
 	} 
 }  
 class Bubble{
@@ -121,6 +129,21 @@ function Create2DArray(rows) {
   return arr;
 }
 
-function checkTicTak(){
-
+function checkTicTak(arr){
+    let left_down = arr[0][0] + arr[0][1] + arr[0][2];
+    let middle_down = arr[1][0] + arr[1][1] + arr[1][2];
+    let right_down = arr[2][0] + arr[2][1] + arr[2][2];
+    let up = arr[0][0] + arr[1][0] + arr[2][0];
+    let middle_up = arr[0][1] + arr[1][1] + arr[2][1];
+    let down_up = arr[0][2] + arr[1][2] + arr[2][2]; 
+    let diag = arr[0][0] + arr[1][1] + arr[2][2];
+    let r_diag = arr[2][0] + arr[1][1] + arr[0][2];
+    if(left_down == 3 || middle_down == 3 || right_down == 3 || up == 3 || middle_up == 3 || down_up == 3 || diag == 3 || r_diag == 3){
+        console.log("Player 1 won");
+        game = false;
+    }
+    if(left_down == -3 || middle_down == -3 || right_down == -3 || up == -3 || middle_up == -3 || down_up == -3 || diag == -3 || r_diag == -3){
+        console.log("Player 2 won");
+        game = false;
+    }
 }
