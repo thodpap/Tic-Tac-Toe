@@ -8,6 +8,7 @@ let arr = Create2DArray(3);
 let dif = 30;
 let game = true;
 let num = false;
+
 function setup() { 
 	createCanvas(width, height);
 	for(let i = 0; i < 3; i++){
@@ -63,54 +64,21 @@ function mouseClicked(){
 //         console.log(arr[pos.x][pos.y]);
 	} 
 }  
-class Bubble{
-	constructor(pos,r){
-		this.x = pos.x;
-		this.y = pos.y;
-		this.r = r;
-	} 
-	show(){ 
-		noStroke();
-		fill('red');
-		ellipse(width/6 + this.x*width/3,height/6 + height/3*this.y,this.r,this.r);
-	}
-}
 
-class Cross{
-	constructor(pos){
-		this.x = pos.x;
-		this.y = pos.y;
-	}
-	show(){
-		strokeWeight(4);
-		stroke('blue');
-		line(this.x*width/3 + dif,this.y*height/3 + dif,(this.x + 1)*width/3 - dif,(this.y+1)*height/3 - dif);
-		strokeWeight(4);
-		stroke('blue');
-		line((this.x+1)*width/3 - dif,this.y*height/3 + dif,this.x*width/3 + dif,(1+this.y)*height/3 - dif);
-	}
-}
 // Help class
-class Block{
-	constructor(x,y){
-		this.x = x;
-		this.y = y;
-	}
-}
+
 // Create a 2D array
 function Create2DArray(rows) {
   var arr = [];
-
   for (var i=0;i<rows;i++) {
      arr[i] = [];
   }
-
   return arr;
 }
 
 function checkTicTak(){
     if(checkEnd()){
-        if(!num){
+        if(!num && game){
             console.log("Draw");
             num = true;
         }
@@ -145,14 +113,4 @@ function checkEnd(){
         }
     } 
     return true;
-}
-function printLines(){
-    fill('white');
-	rect(width/3,0,5,height);
-	fill('white');
-	rect(2*width/3,0,5,height);
-	fill('white');
-	rect(0,height/3,width,5);
-	fill('white');
-	rect(0,2*height/3,width,5);
 }
