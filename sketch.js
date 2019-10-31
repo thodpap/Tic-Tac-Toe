@@ -1,12 +1,13 @@
 let height = 600;
 let width = 600;
-let radius = 100;
+let radius = 120;
 let bubbles_red = [];
 let cross_blue = [];
 let player = true;   
 let arr = Create2DArray(3);
 let dif = 30;
 let game = true;
+let num = false;
 function setup() { 
 	createCanvas(width, height);
 	for(let i = 0; i < 3; i++){
@@ -14,29 +15,19 @@ function setup() {
 			arr[i][j] = 0;
 		}
 	}  
-}
-
+} 
 function draw() {
 	background(0);  
-	fill('white');
-	rect(width/3,0,5,height);
-	fill('white');
-	rect(2*width/3,0,5,height);
-	fill('white');
-	rect(0,height/3,width,5);
-	fill('white');
-	rect(0,2*height/3,width,5);
-
+    printLines(); 
 	for(let i = 0; i < bubbles_red.length; i++){
 		bubbles_red[i].show(); 
 	}
 	for(let i = 0; i < cross_blue.length; i++){ 
 		cross_blue[i].show();
-	}
-	if(game){
-        checkTicTak(arr);
-    }
+	} 
+    checkTicTak(arr);   
 } 
+
 function mouseClicked(){ 
 	let pos = new Block(0,0); 
 	let valid = false;
@@ -55,7 +46,7 @@ function mouseClicked(){
 		pos.y = 2;
 	}
 	// console.log(pos);
-	if(!arr[pos.x][pos.y] && game){ 
+	if(!arr[pos.x][pos.y] && !checkEnd()){ 
         if(player){
             arr[pos.x][pos.y] = 1;
         }else{
@@ -69,7 +60,7 @@ function mouseClicked(){
 			cross_blue.push(c);
 		}
 		player = !player;
-        console.log(arr[pos.x][pos.y]);
+//         console.log(arr[pos.x][pos.y]);
 	} 
 }  
 class Bubble{
@@ -77,19 +68,7 @@ class Bubble{
 		this.x = pos.x;
 		this.y = pos.y;
 		this.r = r;
-	}
-	// move(){
-	// 	this.x = this.x + random(-2,2);
-	// 	this.y = this.y + random(-2,2);
-	// }
-	/*
-	0 - 0->  center: 100,100
-	1 - 0->  center: 300, 100
-	--> 100 + pos.x * 200
-	200 is width/3 
-	100 is widht/6
-	and 100 + pos.y * 200  
-	*/
+	} 
 	show(){ 
 		noStroke();
 		fill('red');
@@ -129,7 +108,14 @@ function Create2DArray(rows) {
   return arr;
 }
 
-function checkTicTak(arr){
+function checkTicTak(){
+    if(checkEnd()){
+        if(!num){
+            console.log("Draw");
+            num = true;
+        }
+        return ;
+    }
     let left_down = arr[0][0] + arr[0][1] + arr[0][2];
     let middle_down = arr[1][0] + arr[1][1] + arr[1][2];
     let right_down = arr[2][0] + arr[2][1] + arr[2][2];
@@ -146,4 +132,27 @@ function checkTicTak(arr){
         console.log("Player 2 won");
         game = false;
     }
+}
+function checkEnd(){
+    if(!game){
+        return true;
+    } 
+    for(let i = 0; i <= 2; i++){ 
+        for(let j = 0; j <= 2; j++){
+            if(arr[i][j] == 0){ 
+                return false;
+            }
+        }
+    } 
+    return true;
+}
+function printLines(){
+    fill('white');
+	rect(width/3,0,5,height);
+	fill('white');
+	rect(2*width/3,0,5,height);
+	fill('white');
+	rect(0,height/3,width,5);
+	fill('white');
+	rect(0,2*height/3,width,5);
 }
